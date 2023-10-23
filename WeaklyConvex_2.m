@@ -89,7 +89,7 @@ set(gca, 'FontSize', fsz, 'LineWidth', alw); %<- Set properties
 % % ylim([0,6]);
 % % xlim([-2,0.5]);
 % 
-print("Example-weaklyconvex-Equivalence",'-depsc','-tiff');
+%print("Example-weaklyconvex-Equivalence",'-depsc','-tiff');
 % %subplot(1,2,2);
 
 
