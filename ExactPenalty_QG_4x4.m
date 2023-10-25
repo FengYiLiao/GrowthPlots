@@ -2,6 +2,7 @@ clc;clear;close all;
 
 %An SDP that satisfies strict complementarity and locally QG
 %The plot wants to show that penalty function satisfies QG
+%4 x 4 example
 
 %Plot parameters
 res = 0.01;
