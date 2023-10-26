@@ -15,7 +15,7 @@ mue = muq*2;
 
 %Problem data
 n   = 2;
-rho = 20; %exact penalty parameter
+rho = 5; %exact penalty parameter
 b   = ones(n,1);
 C = [1,0.5;
      0.5,1];
@@ -26,12 +26,14 @@ A2      = zeros(n,n);
 A2(2,2) = 1;
 
 
+ystar   = [0.5;0.5];
+
 % C2 = [1,1,1,0;
 %      1,1,0,1;
 %      1,0,2,1;
 %      0,1,1,2];
 
-y1      = linspace(-1,3);
+y1      = linspace(ystar(1) - 0.01,ystar(1)+0.01);
 y2      = y1;
 % y       = [y1; y2];
 
@@ -44,8 +46,8 @@ grad    = zeros(length(y1),length(y2));
 EIGS    = zeros(length(y1),length(y2));
 for i =1:length(y1)
     for j =1:length(y2)
-        obj(i,j)  = -y1(i)-y2(j)+rho*max([0;eig(-C+A1*y1(i)+A2*y2(j))]);
-        dist(i,j) = (y1(i)+1)^2+(y2(j)+1)^2;
+        obj(i,j)  = -y1(i)-y2(j)+rho*max([0;eig(-C+A1*y1(i)+A2*y2(j))]) + b.'*ystar;
+        dist(i,j) = sqrt((y1(i)-ystar(1))^2+(y2(j)-ystar(2))^2);
         [V,D]     = eig(C-A1*y1(i)-A2*y2(j));
         EIGS(i,j) = min(diag(D));
         if EIGS(i,j) >= 0
@@ -64,10 +66,12 @@ for i =1:length(y1)
     end
 end
 grad2 = grad.^2;
-%surf(Y1,Y2,dist* muq,'FaceColor','g','EdgeColor',[0 1 0]);
-%hold on;
+
+surf(Y1,Y2,dist *0.05,'FaceColor','g');
+hold on;
 %surf(Y1,Y2,obj,'FaceColor','y','EdgeColor',[1 1 0]);
 surf(Y1,Y2,obj,'FaceColor','y');
-hold on;
+%hold on;
+
 xlabel('$y_1$','interpreter','latex');
 ylabel('$y_2$','interpreter','latex');
