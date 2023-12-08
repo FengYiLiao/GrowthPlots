@@ -65,4 +65,4 @@ legend('$y = |\nabla f(x)| $','$y = \mathrm{Dist}(x,S)$','interpreter','latex','
 ylim([0,6]);
 xlim([-start,start]);
 
-print("Example-nonLip",'-depsc','-tiff');
+%print("Example-nonLip",'-depsc','-tiff');

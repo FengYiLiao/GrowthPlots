@@ -67,8 +67,8 @@ for i =1:length(y1)
 end
 grad2 = grad.^2;
 
-surf(Y1,Y2,dist *0.05,'FaceColor','g');
-hold on;
+%surf(Y1,Y2,dist *0.1,'FaceColor','g');
+%hold on;
 %surf(Y1,Y2,obj,'FaceColor','y','EdgeColor',[1 1 0]);
 surf(Y1,Y2,obj,'FaceColor','y');
 %hold on;
