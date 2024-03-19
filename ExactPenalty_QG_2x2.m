@@ -17,8 +17,8 @@ mue = muq*2;
 n   = 2;
 rho = 5; %exact penalty parameter
 b   = ones(n,1);
-C = [1,0.5;
-     0.5,1];
+C = [1,-1;
+     -1,1];
 c  = reshape(C,[],1);
 A1      = zeros(n,n);
 A1(1,1) = 1;
@@ -26,14 +26,15 @@ A2      = zeros(n,n);
 A2(2,2) = 1;
 
 
-ystar   = [0.5;0.5];
+ystar   = [0;0];
 
 % C2 = [1,1,1,0;
 %      1,1,0,1;
 %      1,0,2,1;
 %      0,1,1,2];
 
-y1      = linspace(ystar(1) - 0.01,ystar(1)+0.01);
+dy  = 1;
+y1      = linspace(ystar(1) - dy,ystar(1)+dy);
 y2      = y1;
 % y       = [y1; y2];
 
