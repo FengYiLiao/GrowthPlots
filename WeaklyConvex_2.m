@@ -169,7 +169,7 @@ set(gca, 'Position', [0.71 0.2 0.225 0.7]); %<- Set properties
 %print("Example-weaklyconvex-Equivalence",'-depsc','-tiff');
 % %subplot(1,2,2);
 
-print("Figure\Example-weaklyconvex-Equivalence",'-depsc','-tiff');
+%print("Figure\Example-weaklyconvex-Equivalence",'-depsc','-tiff');
 
 
 

@@ -1,12 +1,10 @@
 clc;clear;close all;
 
 %An SDP that satisfies strict complementarity and locally QG
-%The plot wants to show that penalty function satisfies QG
+%The plot wants to show f(y) - f* satisfies QG
 %2 x 2 example
 %unique dual solution y* = [0,0]
-
-%Plot parameters
-res = 0.0001;
+%This plot also shows the 
 
 %Growth coefficients
 muq = 0.5;
@@ -15,7 +13,7 @@ mue = muq*2;
 
 %Problem data
 n   = 2;
-rho = 5; %exact penalty parameter
+rho = 4; %exact penalty parameter
 b   = ones(n,1);
 C = [1,-1;
      -1,1];
@@ -28,19 +26,11 @@ A2(2,2) = 1;
 
 ystar   = [0;0];
 
-% C2 = [1,1,1,0;
-%      1,1,0,1;
-%      1,0,2,1;
-%      0,1,1,2];
-
-dy  = 0.75;
+dy      = 1; %interval
 y1      = linspace(ystar(1) - dy,ystar(1)+dy);
 y2      = y1;
-% y       = [y1; y2];
 
 [Y1,Y2] = meshgrid(y1,y2);
-% Y3      = ones(length(y1),length(y1));
-% Y4      = Y3;
 obj     = zeros(length(y1),length(y2));
 dist    = zeros(length(y1),length(y2));
 grad    = zeros(length(y1),length(y2));
@@ -67,22 +57,16 @@ for i =1:length(y1)
     end
 end
 
-surf(Y1,Y2,obj,'EdgeColor', 'none','FaceAlpha',0.9);
+
+surf(Y1,Y2,obj,'EdgeColor', 'none','FaceColor','#4DBEEE','FaceAlpha',0.5);
+
 grid on
 hold on
 
+surf(Y1,Y2,0.3*dist.^2,'EdgeColor', 'none','FaceColor','#EDB120','FaceAlpha',0.7);
+
 %optimal solution 
-p = plot3(0,0,0,'-o','Color','none','MarkerSize',5,'MarkerFaceColor','#D95319');%#D9FFFF
- 
-%Draw the Quadratic growth direction
-d1 = linspace(-dy,dy);
-d2 = -d1;
-obj2 = zeros(length(d1),1);
-for i = 1:length(d1)
-    obj2(i) = -b(1)*d1(i)-b(2)*d2(i)+rho*max([0;eig(-C+A1*d1(i)+A2*d2(i))]) + b.'*ystar;
-end
-plot3(d1,d2,obj2,'r','LineWidth', 2);
-hold on 
+plot3(0,0,0,'-o','Color','none','MarkerSize',5,'MarkerFaceColor','#D95319');%#D9FFFF
 
 %Draw the boundary where eig = 0
 d1 = linspace(-dy,0);
@@ -92,6 +76,7 @@ for i = 1:length(d1)
     obj3(i) = -b(1)*d1(i)-b(2)*d2(i)+rho*max([0;eig(-C+A1*d1(i)+A2*d2(i))]) + b.'*ystar;
 end
 plot3(d1,d2,obj3,'Color','#000000','LineWidth', 2);
+
 
 d2 = linspace(-dy,0);
 d1 = d2./(d2-1);
@@ -105,19 +90,46 @@ grad2 = grad.^2;
 
 
 
-view([25 35]);
+view([47 30]);
+
+
+
 % p.Marker = "o";
-%surf(Y1,Y2,dist *0.1,'FaceColor','g');
-%hold on;
-%surf(Y1,Y2,obj,'FaceColor','y','EdgeColor',[1 1 0]);
 
 %hold on;
 
 xlabel('$y_1$','interpreter','latex');
 ylabel('$y_2$','interpreter','latex');
-zlabel('$f(y)$','interpreter','latex');
+%zlabel('$f(y)$','interpreter','latex');
 
-width  = 6;     % Width in inches
+width  = 4;     % Width in inches
 height = 4;    % Height in inches
 set(gcf, 'Position', [300 100  width*100, height*100]); %<- Set size
-set(gca, 'FontSize', 12); %<- Set properties
+set(gca, 'FontSize', 11); %<- Set properties
+legend('$f(y)$','$0.3 \cdot\mathrm{Dist}^2(y,S)$','interpreter','latex','Location','none','Position',[0.05,0.87,0.37,0.1],'Box','off','FontSize', 11);
+%print(gcf,'ExactPenalty_QG.eps','-depsc2','-r300');
+
+
+
+%Sectional view
+figure();
+%Draw the boundary where eig = 0
+d1 = linspace(-dy,0);
+d2 = d1./(d1-1);
+obj3 = zeros(length(d1),1);
+for i = 1:length(d1)
+    obj3(i) = -b(1)*d1(i)-b(2)*d2(i)+rho*max([0;eig(-C+A1*d1(i)+A2*d2(i))]) + b.'*ystar;
+end
+plot(d1,obj3,'Color','#000000','LineWidth', 2);
+
+
+hold on
+d2 = linspace(-dy,0);
+d1 = d2./(d2-1);
+obj3 = zeros(length(d1),1);
+for i = 1:length(d1)
+    obj3(i) = -b(1)*d1(i)-b(2)*d2(i)+rho*max([0;eig(-C+A1*d1(i)+A2*d2(i))]) + b.'*ystar;
+end
+plot(d1,obj3,'Color','#000000','LineWidth', 2);
+xlabel('$y_1$','interpreter','latex');
+plot3(0,0,0,'-o','Color','none','MarkerSize',5,'MarkerFaceColor','#D95319');%#D9FFFF
