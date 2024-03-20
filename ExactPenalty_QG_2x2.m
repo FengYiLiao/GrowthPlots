@@ -33,7 +33,7 @@ ystar   = [0;0];
 %      1,0,2,1;
 %      0,1,1,2];
 
-dy  = 0.5;
+dy  = 0.75;
 y1      = linspace(ystar(1) - dy,ystar(1)+dy);
 y2      = y1;
 % y       = [y1; y2];
@@ -85,7 +85,7 @@ plot3(d1,d2,obj2,'r','LineWidth', 2);
 hold on 
 
 %Draw the boundary where eig = 0
-d1 = linspace(-dy,dy*2/3);
+d1 = linspace(-dy,0);
 d2 = d1./(d1-1);
 obj3 = zeros(length(d1),1);
 for i = 1:length(d1)
@@ -93,13 +93,19 @@ for i = 1:length(d1)
 end
 plot3(d1,d2,obj3,'Color','#000000','LineWidth', 2);
 
+d2 = linspace(-dy,0);
+d1 = d2./(d2-1);
+obj3 = zeros(length(d1),1);
+for i = 1:length(d1)
+    obj3(i) = -b(1)*d1(i)-b(2)*d2(i)+rho*max([0;eig(-C+A1*d1(i)+A2*d2(i))]) + b.'*ystar;
+end
+plot3(d1,d2,obj3,'Color','#000000','LineWidth', 2);
 
 grad2 = grad.^2;
 
 
 
-
-
+view([25 35]);
 % p.Marker = "o";
 %surf(Y1,Y2,dist *0.1,'FaceColor','g');
 %hold on;
@@ -109,3 +115,9 @@ grad2 = grad.^2;
 
 xlabel('$y_1$','interpreter','latex');
 ylabel('$y_2$','interpreter','latex');
+zlabel('$f(y)$','interpreter','latex');
+
+width  = 6;     % Width in inches
+height = 4;    % Height in inches
+set(gcf, 'Position', [300 100  width*100, height*100]); %<- Set size
+set(gca, 'FontSize', 12); %<- Set properties
