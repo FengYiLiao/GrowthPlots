@@ -63,10 +63,10 @@ surf(Y1,Y2,obj,'EdgeColor', 'none','FaceColor','#4DBEEE','FaceAlpha',0.5);
 grid on
 hold on
 
-surf(Y1,Y2,0.3*dist.^2,'EdgeColor', 'none','FaceColor','#EDB120','FaceAlpha',0.7);
+surf(Y1,Y2,0.3*dist.^2,'EdgeColor', 'none','FaceColor','#77AC30','FaceAlpha',0.7);
 
 %optimal solution 
-plot3(0,0,0,'-o','Color','none','MarkerSize',5,'MarkerFaceColor','#D95319');%#D9FFFF
+plot3(0,0,0,'-o','Color','none','MarkerSize',6,'MarkerFaceColor','r');%#D9FFFF
 
 %Draw the boundary where eig = 0
 d1 = linspace(-dy,0);
@@ -75,7 +75,7 @@ obj3 = zeros(length(d1),1);
 for i = 1:length(d1)
     obj3(i) = -b(1)*d1(i)-b(2)*d2(i)+rho*max([0;eig(-C+A1*d1(i)+A2*d2(i))]) + b.'*ystar;
 end
-plot3(d1,d2,obj3,'Color','#000000','LineWidth', 2);
+plot3(d1,d2,obj3,'Color','m','LineWidth', 2);
 
 
 d2 = linspace(-dy,0);
@@ -84,7 +84,7 @@ obj3 = zeros(length(d1),1);
 for i = 1:length(d1)
     obj3(i) = -b(1)*d1(i)-b(2)*d2(i)+rho*max([0;eig(-C+A1*d1(i)+A2*d2(i))]) + b.'*ystar;
 end
-plot3(d1,d2,obj3,'Color','#000000','LineWidth', 2);
+plot3(d1,d2,obj3,'Color','m','LineWidth', 2);
 
 grad2 = grad.^2;
 
@@ -107,7 +107,7 @@ height = 4;    % Height in inches
 set(gcf, 'Position', [300 100  width*100, height*100]); %<- Set size
 set(gca, 'FontSize', 11); %<- Set properties
 legend('$f(y)$','$0.3 \cdot\mathrm{Dist}^2(y,S)$','interpreter','latex','Location','none','Position',[0.05,0.87,0.37,0.1],'Box','off','FontSize', 11);
-%print(gcf,'ExactPenalty_QG.eps','-depsc2','-r300');
+print(gcf,'ExactPenalty_QG_3D.eps','-depsc2','-r300');
 
 
 
@@ -120,7 +120,7 @@ obj3 = zeros(length(d1),1);
 for i = 1:length(d1)
     obj3(i) = -b(1)*d1(i)-b(2)*d2(i)+rho*max([0;eig(-C+A1*d1(i)+A2*d2(i))]) + b.'*ystar;
 end
-plot(d1,obj3,'Color','#000000','LineWidth', 2);
+plot(d1,obj3,'Color','m','LineWidth', 2);
 
 
 hold on
@@ -130,6 +130,11 @@ obj3 = zeros(length(d1),1);
 for i = 1:length(d1)
     obj3(i) = -b(1)*d1(i)-b(2)*d2(i)+rho*max([0;eig(-C+A1*d1(i)+A2*d2(i))]) + b.'*ystar;
 end
-plot(d1,obj3,'Color','#000000','LineWidth', 2);
+plot(d1,obj3,'Color','m','LineWidth', 2);
 xlabel('$y_1$','interpreter','latex');
-plot3(0,0,0,'-o','Color','none','MarkerSize',5,'MarkerFaceColor','#D95319');%#D9FFFF
+ylabel('$f(y)$','interpreter','latex');
+set(gcf, 'Position', [300 100  width*100, height*100]); %<- Set size
+set(gca, 'FontSize', 11); %<- Set properties
+plot(0,0,'-o','Color','none','MarkerSize',6,'MarkerFaceColor','r');%#D9FFFF
+grid on;
+print(gcf,'ExactPenalty_QG_Sectional.eps','-depsc2','-r300');
