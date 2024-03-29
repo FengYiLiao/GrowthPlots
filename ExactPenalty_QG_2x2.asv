@@ -26,7 +26,7 @@ y1      = linspace(ystar(1) - dy,ystar(1)+dy,resolution);
 y2      = y1;
 
 [Y1,Y2] = meshgrid(y1,y2);
-obj_nonlinear = zeros(length(y1),length(y2));
+obj = zeros(length(y1),length(y2));
 obj_linear = zeros(length(y1),length(y2));
 dist    = zeros(length(y1),length(y2));
 %grad    = zeros(length(y1),length(y2));
@@ -35,11 +35,11 @@ for i =1:length(y1)
     for j =1:length(y2)
         lambda_max = max([0;eig(-C+A1*y1(i)+A2*y2(j))]);
         if lambda_max == 0
-            obj_linear(i,j)    = -b(1)*y1(i)-b(2)*y2(j)+rho*lambda_max + b.'*ystar;
-            obj_nonlinear(i,j) = nan;
+            obj_linear(i,j) = -b(1)*y1(i)-b(2)*y2(j)+rho*lambda_max + b.'*ystar;
+            obj(i,j) = nan;
         else
-            obj_nonlinear(i,j) = -b(1)*y1(i)-b(2)*y2(j)+rho*lambda_max + b.'*ystar;
-            obj_linear(i,j)    = nan;
+            obj(i,j)  = -b(1)*y1(i)-b(2)*y2(j)+rho*lambda_max + b.'*ystar;
+            obj_linear(i,j) = nan;
         end
         dist(i,j) = sqrt((y1(i)-ystar(1))^2+(y2(j)-ystar(2))^2);
         % [V,D]     = eig(C-A1*y1(i)-A2*y2(j));
@@ -62,16 +62,16 @@ end
 
 
 f1 = figure;
-%firstax = axes (f1, 'FontSize', 16); 
+firstax = axes (f1, 'FontSize', 16); 
 h1 = surf(Y1,Y2,obj_linear,'EdgeColor', 'none','FaceColor','#EDB120','FaceAlpha',0.5);
 
 % 
 hold on;
-h2 = surf(Y1,Y2,obj_nonlinear,'EdgeColor', 'none','FaceColor','#4DBEEE','FaceAlpha',0.5);
+h2 = surf(Y1,Y2,obj,'EdgeColor', 'none','FaceColor','#4DBEEE','FaceAlpha',0.5);
 
 
 %optimal solution 
-plot3(0,0,0,'-o','Color','none','MarkerSize',6,'MarkerFaceColor','r');
+plot3(0,0,0,'-o','Color','none','MarkerSize',6,'MarkerFaceColor','r');%#D9FFFF
 
 %Draw the boundary where eig = 0
 d1 = linspace(-dy,0);
@@ -113,9 +113,8 @@ set(gca, 'FontSize', 12); %<- Set properties
 %print(gcf,'ExactPenalty_QG_3D.eps','-depsc2','-r300');
 
 
-%%
-%Sectional view
 
+%Sectional view
 figure();
 %Draw the boundary where eig = 0
 d1 = linspace(-dy,0);
